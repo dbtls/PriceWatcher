@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: pricewatch
+  profiles:
+    active: dev
+
+logging:
+  level:
+    root: info
+
+server:
+  port: 8080
+
+
