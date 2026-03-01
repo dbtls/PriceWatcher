@@ -4,11 +4,14 @@ spring:
   profiles:
     active: dev
 
-logging:
-  level:
-    root: info
-
 server:
   port: 8080
 
+jwt:
+  secret: ${JWT_SECRET:pricewatch-secret-key-pricewatch-secret-key}
+  access-token-validity: 900000
+  refresh-token-validity: 1209600000
 
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000}

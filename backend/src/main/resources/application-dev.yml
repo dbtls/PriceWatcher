@@ -1,17 +1,28 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/priceWatch?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3307/pricewatch?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf8
     username: root
     password: root1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
-        jdbc.time_zone: UTC
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
 
 logging:
   level:
