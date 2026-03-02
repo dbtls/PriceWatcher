@@ -35,8 +35,8 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<ResponseDto<LoginRes>> login(@Valid @RequestBody LoginReq req) {
-        LoginRes loginRes = authService.login(req);
-        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "TODO_REFRESH_TOKEN")
+        AuthService.LoginResult loginResult = authService.login(req);
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", loginResult.refreshToken())
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
@@ -47,7 +47,7 @@ public class AuthController {
         // Refresh Token은 HttpOnly 쿠키로 전달.
         return ResponseEntity.ok()
                 .header("Set-Cookie", refreshCookie.toString())
-                .body(ResponseDto.success("로그인 성공", loginRes));
+                .body(ResponseDto.success("로그인 성공", loginResult.loginRes()));
     }
 
     /**
