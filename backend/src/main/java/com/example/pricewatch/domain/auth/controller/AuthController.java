@@ -7,6 +7,7 @@ import com.example.pricewatch.domain.auth.service.AuthService;
 import com.example.pricewatch.global.dto.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    @Value("${app.auth.refresh-cookie-name:refreshToken}")
+    private String refreshCookieName;
+    @Value("${app.auth.refresh-cookie-secure:false}")
+    private boolean refreshCookieSecure;
+    @Value("${jwt.refresh-token-validity:1209600000}")
+    private long refreshTokenValidityMs;
 
     /**
      * 회원가입을 처리.
@@ -36,17 +43,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ResponseDto<LoginRes>> login(@Valid @RequestBody LoginReq req) {
         AuthService.LoginResult loginResult = authService.login(req);
-        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", loginResult.refreshToken())
-                .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .path("/auth/refresh")
-                .maxAge(60L * 60L * 24L * 14L)
-                .build();
 
-        // Refresh Token은 HttpOnly 쿠키로 전달.
         return ResponseEntity.ok()
-                .header("Set-Cookie", refreshCookie.toString())
+                .header("Set-Cookie", createRefreshCookie(loginResult.refreshToken()).toString())
                 .body(ResponseDto.success("로그인 성공", loginResult.loginRes()));
     }
 
@@ -54,16 +53,46 @@ public class AuthController {
      * Refresh Token으로 Access Token을 재발급.
      */
     @PostMapping("/refresh")
-    public ResponseEntity<ResponseDto<LoginRes>> refresh(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
-        return ResponseEntity.ok(ResponseDto.success("토큰 재발급 성공", LoginRes.of("TODO_ACCESS_TOKEN")));
+    public ResponseEntity<ResponseDto<LoginRes>> refresh(
+            @CookieValue(value = "${app.auth.refresh-cookie-name:refreshToken}", required = false) String refreshToken
+    ) {
+        AuthService.LoginResult loginResult = authService.refresh(refreshToken);
+        return ResponseEntity.ok()
+                .header("Set-Cookie", createRefreshCookie(loginResult.refreshToken()).toString())
+                .body(ResponseDto.success("토큰 재발급 성공", loginResult.loginRes()));
     }
 
     /**
      * 현재 세션 로그아웃을 처리.
      */
     @PostMapping("/logout")
-    public ResponseEntity<ResponseDto<Void>> logout() {
-        return ResponseEntity.ok(ResponseDto.success("로그아웃 성공"));
+    public ResponseEntity<ResponseDto<Void>> logout(
+            @CookieValue(value = "${app.auth.refresh-cookie-name:refreshToken}", required = false) String refreshToken
+    ) {
+        authService.logout(refreshToken);
+        return ResponseEntity.ok()
+                .header("Set-Cookie", clearRefreshCookie().toString())
+                .body(ResponseDto.success("로그아웃 성공"));
+    }
+
+    private ResponseCookie createRefreshCookie(String refreshToken) {
+        return ResponseCookie.from(refreshCookieName, refreshToken)
+                .httpOnly(true)
+                .secure(refreshCookieSecure)
+                .sameSite("Lax")
+                .path("/auth")
+                .maxAge(refreshTokenValidityMs / 1000)
+                .build();
+    }
+
+    private ResponseCookie clearRefreshCookie() {
+        return ResponseCookie.from(refreshCookieName, "")
+                .httpOnly(true)
+                .secure(refreshCookieSecure)
+                .sameSite("Lax")
+                .path("/auth")
+                .maxAge(0)
+                .build();
     }
 }
 

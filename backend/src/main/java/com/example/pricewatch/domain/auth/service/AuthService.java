@@ -28,6 +28,7 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -72,25 +73,74 @@ public class AuthService {
     @Transactional
     public LoginResult login(LoginReq req) {
         User user = userRepository.findByEmail(req.email())
-                .orElseThrow(() -> new ApiException(ErrorCode.AUTH_REQUIRED));
+                .orElseThrow(() -> new ApiException(ErrorCode.INVALID_LOGIN));
 
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
-            throw new ApiException(ErrorCode.AUTH_REQUIRED);
+            throw new ApiException(ErrorCode.INVALID_LOGIN);
         }
 
         String accessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getEmail(), user.getRole().name());
         String rawRefreshToken = UUID.randomUUID().toString();
 
         // DB에는 원문 대신 해시 저장.
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(user)
-                .tokenHash(HashUtil.sha256(rawRefreshToken))
-                .familyId(UUID.randomUUID().toString())
-                .expiresAt(LocalDateTime.now().plus(Duration.ofMillis(refreshTokenValidityMs)))
-                .build();
+        RefreshToken refreshToken = RefreshToken.create(
+                user,
+                HashUtil.sha256(rawRefreshToken),
+                UUID.randomUUID().toString(),
+                LocalDateTime.now().plus(Duration.ofMillis(refreshTokenValidityMs))
+        );
         refreshTokenRepository.save(refreshToken);
 
         return new LoginResult(LoginRes.of(accessToken), rawRefreshToken);
     }
-}
 
+    /**
+     * Refresh Token 회전 후 Access Token을 재발급.
+     */
+    @Transactional
+    public LoginResult refresh(String rawRefreshToken) {
+        if (rawRefreshToken == null || rawRefreshToken.isBlank()) {
+            throw new ApiException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String tokenHash = HashUtil.sha256(rawRefreshToken);
+        RefreshToken currentToken = refreshTokenRepository.findByTokenHashAndRevokedAtIsNull(tokenHash)
+                .orElseThrow(() -> new ApiException(ErrorCode.INVALID_TOKEN));
+
+        LocalDateTime now = LocalDateTime.now();
+        if (currentToken.isExpired(now)) {
+            currentToken.revokeNow();
+            throw new ApiException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+        }
+
+        currentToken.revokeNow();
+
+        String nextRawRefreshToken = UUID.randomUUID().toString();
+        RefreshToken rotatedToken = RefreshToken.create(
+                currentToken.getUser(),
+                HashUtil.sha256(nextRawRefreshToken),
+                currentToken.getFamilyId(),
+                now.plus(Duration.ofMillis(refreshTokenValidityMs))
+        );
+        refreshTokenRepository.save(rotatedToken);
+
+        User user = currentToken.getUser();
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getEmail(), user.getRole().name());
+
+        return new LoginResult(LoginRes.of(accessToken), nextRawRefreshToken);
+    }
+
+    /**
+     * 현재 refresh token을 폐기한다. (로그아웃)
+     */
+    @Transactional
+    public void logout(String rawRefreshToken) {
+        if (rawRefreshToken == null || rawRefreshToken.isBlank()) {
+            return;
+        }
+
+        String tokenHash = HashUtil.sha256(rawRefreshToken);
+        refreshTokenRepository.findByTokenHashAndRevokedAtIsNull(tokenHash)
+                .ifPresent(RefreshToken::revokeNow);
+    }
+}

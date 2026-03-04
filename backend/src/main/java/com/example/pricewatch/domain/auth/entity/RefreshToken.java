@@ -37,6 +37,20 @@ public class RefreshToken extends BaseTimeEntity {
 
     private LocalDateTime revokedAt;
 
+    public static RefreshToken create(
+            User user,
+            String tokenHash,
+            String familyId,
+            LocalDateTime expiresAt
+    ) {
+        return RefreshToken.builder()
+                .user(user)
+                .tokenHash(tokenHash)
+                .familyId(familyId)
+                .expiresAt(expiresAt)
+                .build();
+    }
+
     /**
      * 토큰 폐기 처리.
      */
@@ -49,5 +63,9 @@ public class RefreshToken extends BaseTimeEntity {
      */
     public boolean isRevoked() {
         return revokedAt != null;
+    }
+
+    public boolean isExpired(LocalDateTime now) {
+        return expiresAt.isBefore(now);
     }
 }

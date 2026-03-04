@@ -15,3 +15,6 @@ jwt:
 app:
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000}
+  auth:
+    refresh-cookie-name: ${REFRESH_COOKIE_NAME:refreshToken}
+    refresh-cookie-secure: ${REFRESH_COOKIE_SECURE:false}
