@@ -7,9 +7,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-/**
- * Refresh Token 엔티티.
- */
 @Entity
 @Table(name = "refresh_tokens")
 @Getter
@@ -37,30 +34,10 @@ public class RefreshToken extends BaseTimeEntity {
 
     private LocalDateTime revokedAt;
 
-    public static RefreshToken create(
-            User user,
-            String tokenHash,
-            String familyId,
-            LocalDateTime expiresAt
-    ) {
-        return RefreshToken.builder()
-                .user(user)
-                .tokenHash(tokenHash)
-                .familyId(familyId)
-                .expiresAt(expiresAt)
-                .build();
-    }
-
-    /**
-     * 토큰 폐기 처리.
-     */
     public void revokeNow() {
         this.revokedAt = LocalDateTime.now();
     }
 
-    /**
-     * 토큰 폐기 여부 반환.
-     */
     public boolean isRevoked() {
         return revokedAt != null;
     }

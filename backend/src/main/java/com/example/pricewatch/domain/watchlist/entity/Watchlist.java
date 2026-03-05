@@ -8,9 +8,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-/**
- * 워치리스트 엔티티.
- */
 @Entity
 @Table(name = "watchlists", uniqueConstraints = @UniqueConstraint(name = "uk_watchlist_user_product", columnNames = {"user_id", "product_id"}))
 @Getter
@@ -34,16 +31,6 @@ public class Watchlist extends BaseTimeEntity {
     @Column(precision = 15, scale = 0)
     private BigDecimal targetPrice;
 
-    /**
-     * 워치리스트 정적 생성.
-     */
-    public static Watchlist of(User user, Product product) {
-        return Watchlist.builder().user(user).product(product).build();
-    }
-
-    /**
-     * 목표가 수정.
-     */
     public void updateTargetPrice(BigDecimal targetPrice) {
         this.targetPrice = targetPrice;
     }

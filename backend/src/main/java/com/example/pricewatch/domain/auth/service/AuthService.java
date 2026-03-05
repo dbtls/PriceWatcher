@@ -23,9 +23,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * 인증 비즈니스 로직 서비스.
- */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -38,25 +35,18 @@ public class AuthService {
     @Value("${jwt.refresh-token-validity:1209600000}")
     private long refreshTokenValidityMs;
 
-    /**
-     * 로그인 결과 컨테이너.
-     */
     public record LoginResult(
             LoginRes loginRes,
             String refreshToken
     ) {
     }
 
-    /**
-     * 신규 사용자를 등록.
-     */
     @Transactional
     public void register(RegisterReq req) {
         if (userRepository.existsByEmail(req.email())) {
             throw new ApiException(ErrorCode.DUPLICATE_EMAIL);
         }
 
-        // 비밀번호는 해시 후 저장.
         User user = User.builder()
                 .email(req.email())
                 .passwordHash(passwordEncoder.encode(req.password()))
@@ -67,9 +57,6 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    /**
-     * 사용자 인증 후 Access Token을 발급.
-     */
     @Transactional
     public LoginResult login(LoginReq req) {
         User user = userRepository.findByEmail(req.email())
@@ -82,21 +69,17 @@ public class AuthService {
         String accessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getEmail(), user.getRole().name());
         String rawRefreshToken = UUID.randomUUID().toString();
 
-        // DB에는 원문 대신 해시 저장.
-        RefreshToken refreshToken = RefreshToken.create(
-                user,
-                HashUtil.sha256(rawRefreshToken),
-                UUID.randomUUID().toString(),
-                LocalDateTime.now().plus(Duration.ofMillis(refreshTokenValidityMs))
-        );
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user(user)
+                .tokenHash(HashUtil.sha256(rawRefreshToken))
+                .familyId(UUID.randomUUID().toString())
+                .expiresAt(LocalDateTime.now().plus(Duration.ofMillis(refreshTokenValidityMs)))
+                .build();
         refreshTokenRepository.save(refreshToken);
 
         return new LoginResult(LoginRes.of(accessToken), rawRefreshToken);
     }
 
-    /**
-     * Refresh Token 회전 후 Access Token을 재발급.
-     */
     @Transactional
     public LoginResult refresh(String rawRefreshToken) {
         if (rawRefreshToken == null || rawRefreshToken.isBlank()) {
@@ -116,12 +99,12 @@ public class AuthService {
         currentToken.revokeNow();
 
         String nextRawRefreshToken = UUID.randomUUID().toString();
-        RefreshToken rotatedToken = RefreshToken.create(
-                currentToken.getUser(),
-                HashUtil.sha256(nextRawRefreshToken),
-                currentToken.getFamilyId(),
-                now.plus(Duration.ofMillis(refreshTokenValidityMs))
-        );
+        RefreshToken rotatedToken = RefreshToken.builder()
+                .user(currentToken.getUser())
+                .tokenHash(HashUtil.sha256(nextRawRefreshToken))
+                .familyId(currentToken.getFamilyId())
+                .expiresAt(now.plus(Duration.ofMillis(refreshTokenValidityMs)))
+                .build();
         refreshTokenRepository.save(rotatedToken);
 
         User user = currentToken.getUser();
@@ -130,9 +113,6 @@ public class AuthService {
         return new LoginResult(LoginRes.of(accessToken), nextRawRefreshToken);
     }
 
-    /**
-     * 현재 refresh token을 폐기한다. (로그아웃)
-     */
     @Transactional
     public void logout(String rawRefreshToken) {
         if (rawRefreshToken == null || rawRefreshToken.isBlank()) {

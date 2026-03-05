@@ -5,9 +5,6 @@ import com.example.pricewatch.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**
- * 인앱 알림 엔티티.
- */
 @Entity
 @Table(name = "notifications")
 @Getter
@@ -36,16 +33,6 @@ public class Notification extends BaseTimeEntity {
 
     private Long productId;
 
-    /**
-     * 알림 정적 생성.
-     */
-    public static Notification of(User user, NotificationType type, String message, Long productId) {
-        return Notification.builder().user(user).type(type).message(message).isRead(false).productId(productId).build();
-    }
-
-    /**
-     * 알림 읽음 상태 반영.
-     */
     public void read() {
         this.isRead = true;
     }

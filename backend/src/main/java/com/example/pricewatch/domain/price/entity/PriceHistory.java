@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * 일자별 가격 스냅샷 엔티티.
- */
 @Entity
 @Table(name = "price_history", uniqueConstraints = @UniqueConstraint(name = "uk_price_history_product_date", columnNames = {"product_id", "captured_at"}))
 @Getter
@@ -35,16 +32,4 @@ public class PriceHistory {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
-    /**
-     * 가격 이력 정적 생성.
-     */
-    public static PriceHistory of(Product product, BigDecimal price, LocalDate capturedAt) {
-        return PriceHistory.builder()
-                .product(product)
-                .price(price)
-                .capturedAt(capturedAt)
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
 }

@@ -23,7 +23,7 @@
 - 클래스 레벨에 `@Transactional(readOnly = true)` 적용.
 - 쓰기 작업 메서드(`register`, `login`, `refresh`, `logout`)에 `@Transactional` 명시.
 - 로그인 실패 에러를 `AUTH_REQUIRED`에서 `INVALID_LOGIN`으로 분리.
-- Refresh Token 발급 로직을 엔티티 정적 팩토리(`RefreshToken.create`) 사용 방식으로 변경.
+- Refresh Token 발급/회전 시 엔티티 `builder` 생성 방식으로 통일.
 - `refresh(String rawRefreshToken)` 구현:
   - 쿠키 토큰 null/blank 검증
   - 해시 조회 + 미폐기 토큰 검증
@@ -50,7 +50,6 @@
   - `secure`는 환경 설정으로 제어
 
 ### 3) RefreshToken 엔티티 개선
-- `static create(...)` 정적 팩토리 추가.
 - `isExpired(LocalDateTime now)` 메서드 추가.
 - 기존 `revokeNow`, `isRevoked`와 조합해 토큰 상태 판단 로직 단순화.
 
@@ -94,7 +93,6 @@
 
 ## yushinKim 스타일 관점 반영 포인트
 - 서비스 트랜잭션 경계를 명확히 분리.
-- 정적 팩토리 메서드(`create`) 중심으로 엔티티 생성 규칙 강화.
 - 예외 코드 세분화로 비즈니스 에러를 명시적으로 표현.
 - 컨트롤러-서비스 책임 분리(쿠키 I/O는 컨트롤러, 토큰 상태 변경은 서비스).
 
@@ -102,3 +100,23 @@
 1. `Naver API Client + 검색 캐시 + quota + single-flight` 구현
 2. `category1~4 트리 upsert`와 상품 leaf category 연결
 3. `externalKey(link normalize + sha256)` 정책을 저장 로직에 강제 적용
+
+---
+
+## 추가 스타일 통일 작업 (요청 반영)
+
+### 기준
+1. DTO는 `record`만 사용 (`@Builder` 사용 금지)
+2. 엔티티 생성은 `builder`로 통일
+3. 주석은 복잡한 맥락에만 최소한으로 유지
+
+### 반영 내역
+1. 엔티티 정적 팩토리 제거
+   - `RefreshToken.create`, `Category.of`, `Notification.of`, `PriceHistory.of`, `Watchlist.of` 삭제
+2. 서비스에서 엔티티 생성 시 builder 직접 사용
+   - `AuthService`, `WatchlistService` 반영
+3. 자명한 주석 정리
+   - `AuthController`, `AuthService`, `SecurityConfig`, `ResponseDto` 등 기본 설명성 주석 축소
+4. 점검 결과
+   - DTO에서 `class`/`@Builder` 미사용 확인
+   - Entity에서 정적 팩토리(`of/from/create`) 미사용 확인
