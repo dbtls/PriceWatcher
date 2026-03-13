@@ -3,12 +3,17 @@ spring:
     name: pricewatch
   profiles:
     active: dev
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
 
 server:
   port: 8080
 
 jwt:
-  secret: ${JWT_SECRET:pricewatch-secret-key-pricewatch-secret-key}
+  secret: ${JWT_SECRET}
   access-token-validity: 900000
   refresh-token-validity: 1209600000
 
@@ -18,3 +23,13 @@ app:
   auth:
     refresh-cookie-name: ${REFRESH_COOKIE_NAME:refreshToken}
     refresh-cookie-secure: ${REFRESH_COOKIE_SECURE:false}
+
+
+naver:
+  shopping:
+    base-url: ${NAVER_BASE_URL:https://openapi.naver.com}
+    client-id: ${NAVER_CLIENT_ID:}
+    client-secret: ${NAVER_CLIENT_SECRET:}
+    display: ${NAVER_SEARCH_DISPLAY:100}
+    daily-quota: ${NAVER_DAILY_QUOTA:20000}
+    search-cache-ttl-seconds: ${NAVER_SEARCH_CACHE_TTL_SECONDS:1800}

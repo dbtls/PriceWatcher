@@ -4,20 +4,52 @@ import com.example.pricewatch.domain.product.entity.Product;
 
 import java.math.BigDecimal;
 
-/**
- * 상품 요약 응답 DTO.
- */
 public record ProductSummaryRes(
         Long productId,
         String brand,
         String title,
         BigDecimal price,
-        String mallName
+        String mallName,
+        String naverProductId,
+        String externalKey,
+        String url,
+        String categoryPath
 ) {
-    /**
-     * 상품 엔티티를 요약 응답으로 변환.
-     */
     public static ProductSummaryRes from(Product product) {
-        return new ProductSummaryRes(product.getId(), product.getBrand(), product.getTitle(), product.getPrice(), product.getMallName());
+        String categoryPath = product.getCategory() == null ? null : product.getCategory().getPath();
+        return new ProductSummaryRes(
+                product.getId(),
+                product.getBrand(),
+                product.getTitle(),
+                product.getPrice(),
+                product.getMallName(),
+                product.getNaverProductId(),
+                product.getExternalKey(),
+                product.getUrl(),
+                categoryPath
+        );
+    }
+
+    public static ProductSummaryRes external(
+            String brand,
+            String title,
+            BigDecimal price,
+            String mallName,
+            String naverProductId,
+            String externalKey,
+            String url,
+            String categoryPath
+    ) {
+        return new ProductSummaryRes(
+                null,
+                brand,
+                title,
+                price,
+                mallName,
+                naverProductId,
+                externalKey,
+                url,
+                categoryPath
+        );
     }
 }

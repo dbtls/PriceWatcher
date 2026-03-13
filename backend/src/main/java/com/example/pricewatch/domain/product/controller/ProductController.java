@@ -1,10 +1,13 @@
 package com.example.pricewatch.domain.product.controller;
 
+import com.example.pricewatch.domain.product.dto.ProductSelectReq;
+import com.example.pricewatch.domain.product.dto.ProductSelectRes;
 import com.example.pricewatch.domain.product.dto.ProductSearchRes;
 import com.example.pricewatch.domain.product.dto.ProductSummaryRes;
 import com.example.pricewatch.domain.product.service.ProductSearchService;
 import com.example.pricewatch.domain.product.service.ProductService;
 import com.example.pricewatch.global.dto.ResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,11 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<ResponseDto<ProductSearchRes>> search(@RequestParam String q) {
         return ResponseEntity.ok(ResponseDto.success("검색 성공", productSearchService.search(q)));
+    }
+
+    @PostMapping("/select")
+    public ResponseEntity<ResponseDto<ProductSelectRes>> select(@Valid @RequestBody ProductSelectReq req) {
+        return ResponseEntity.ok(ResponseDto.success("상품 선택 저장 성공", productService.select(req)));
     }
 
     /**

@@ -70,6 +70,30 @@ public class Product extends BaseTimeEntity {
         this.failCount = 0;
     }
 
+    public void applySelection(
+            String brand,
+            String title,
+            Category category,
+            BigDecimal price,
+            String mallName,
+            String naverProductId,
+            String externalKey,
+            String url,
+            LocalDateTime seenAt
+    ) {
+        this.brand = brand;
+        this.title = title;
+        this.category = category;
+        this.price = price;
+        this.mallName = mallName;
+        this.naverProductId = naverProductId;
+        this.externalKey = externalKey;
+        this.url = url;
+        this.lastSeenAt = seenAt;
+        this.refreshStatus = RefreshStatus.READY;
+        this.needsRematch = false;
+    }
+
     /**
      * 가격 갱신 실패 상태 반영.
      */

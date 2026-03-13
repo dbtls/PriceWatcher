@@ -25,6 +25,10 @@ public final class RedisKeys {
         return "cache:search:" + queryHash;
     }
 
+    public static String naverDailyQuota(String yyyyMMdd) {
+        return "quota:naver:daily:" + yyyyMMdd;
+    }
+
     /**
      * AI single-flight 락 키를 생성.
      */
