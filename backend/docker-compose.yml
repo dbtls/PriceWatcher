@@ -16,6 +16,16 @@ services:
     ports:
       - "6379:6379"
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    container_name: pricewatch-elasticsearch
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+
   app:
     build:
       context: .
@@ -24,6 +34,7 @@ services:
     depends_on:
       - mysql
       - redis
+      - elasticsearch
     ports:
       - "8080:8080"
     environment:
@@ -33,6 +44,9 @@ services:
       DB_PASSWORD: root1234
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      ELASTICSEARCH_URIS: http://elasticsearch:9200
+      PRODUCT_SEARCH_ES_ENABLED: true
       JWT_SECRET: pricewatch-secret-key-pricewatch-secret-key
 
 volumes:

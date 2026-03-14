@@ -47,6 +47,8 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private String url;
 
+    private String imageUrl;
+
     private LocalDateTime lastSeenAt;
 
     @Enumerated(EnumType.STRING)
@@ -79,6 +81,7 @@ public class Product extends BaseTimeEntity {
             String naverProductId,
             String externalKey,
             String url,
+            String imageUrl,
             LocalDateTime seenAt
     ) {
         this.brand = brand;
@@ -89,6 +92,7 @@ public class Product extends BaseTimeEntity {
         this.naverProductId = naverProductId;
         this.externalKey = externalKey;
         this.url = url;
+        this.imageUrl = imageUrl;
         this.lastSeenAt = seenAt;
         this.refreshStatus = RefreshStatus.READY;
         this.needsRematch = false;

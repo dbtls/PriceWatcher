@@ -13,6 +13,7 @@ public record ProductSelectReq(
         String naverProductId,
         String externalKey,
         String url,
+        String imageUrl,
         String categoryPath
 ) {
 }

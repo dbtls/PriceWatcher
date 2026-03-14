@@ -1,0 +1,25 @@
+@baseUrl = http://localhost:8080
+@email = tester@example.com
+@password = password123!
+
+### 1. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.data.accessToken);
+%}
+
+### 2. Category tree
+GET {{baseUrl}}/categories
+Authorization: Bearer {{accessToken}}
+
+### 3. Category children
+GET {{baseUrl}}/categories/1/children
+Authorization: Bearer {{accessToken}}

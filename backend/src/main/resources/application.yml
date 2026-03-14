@@ -1,6 +1,9 @@
 spring:
   application:
     name: pricewatch
+  autoconfigure:
+    exclude:
+      - org.redisson.spring.starter.RedissonAutoConfigurationV2
   profiles:
     active: dev
   mail:
@@ -8,6 +11,8 @@ spring:
     port: ${MAIL_PORT:587}
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
 
 server:
   port: 8080
@@ -20,9 +25,26 @@ jwt:
 app:
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000}
+  search:
+    db-score-threshold: ${DB_SEARCH_SCORE_THRESHOLD:70}
+    elasticsearch:
+      enabled: ${PRODUCT_SEARCH_ES_ENABLED:false}
+      min-score: ${PRODUCT_SEARCH_ES_MIN_SCORE:2.5}
+      sync-fixed-delay-ms: ${PRODUCT_SEARCH_ES_SYNC_FIXED_DELAY_MS:300000}
   auth:
     refresh-cookie-name: ${REFRESH_COOKIE_NAME:refreshToken}
     refresh-cookie-secure: ${REFRESH_COOKIE_SECURE:false}
+  batch:
+    price:
+      enabled: ${PRICE_BATCH_ENABLED:false}
+      cron: ${PRICE_BATCH_CRON:0 0 4 * * *}
+      group-page-size: ${PRICE_BATCH_GROUP_PAGE_SIZE:500}
+      second-pass-size: ${PRICE_BATCH_SECOND_PASS_SIZE:1000}
+  debug:
+    api-request-dir: ${API_REQUEST_DIR:apiRequests}
+    archive-api-responses: ${ARCHIVE_API_RESPONSES:false}
+  notification:
+    price-drop-rate-threshold: ${PRICE_DROP_RATE_THRESHOLD:10}
 
 
 naver:

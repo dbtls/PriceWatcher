@@ -32,4 +32,8 @@ public class PriceHistory {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    public void updatePrice(BigDecimal price) {
+        this.price = price;
+    }
 }

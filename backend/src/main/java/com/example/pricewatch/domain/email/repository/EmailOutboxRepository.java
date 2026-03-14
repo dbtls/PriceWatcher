@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface EmailOutboxRepository extends JpaRepository<EmailOutbox, Long> {
     List<EmailOutbox> findTop100ByStatusOrderByCreatedAtAsc(EmailOutboxStatus status);
+    long countByStatus(EmailOutboxStatus status);
 }
-

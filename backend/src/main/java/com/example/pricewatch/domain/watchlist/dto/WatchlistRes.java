@@ -11,6 +11,7 @@ public record WatchlistRes(
         Long watchlistId,
         Long productId,
         String title,
+        String imageUrl,
         BigDecimal targetPrice
 ) {
     /**
@@ -21,6 +22,7 @@ public record WatchlistRes(
                 watchlist.getId(),
                 watchlist.getProduct().getId(),
                 watchlist.getProduct().getTitle(),
+                watchlist.getProduct().getImageUrl(),
                 watchlist.getTargetPrice()
         );
     }

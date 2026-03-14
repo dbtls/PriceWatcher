@@ -13,6 +13,7 @@ public record ProductSummaryRes(
         String naverProductId,
         String externalKey,
         String url,
+        String imageUrl,
         String categoryPath
 ) {
     public static ProductSummaryRes from(Product product) {
@@ -26,6 +27,7 @@ public record ProductSummaryRes(
                 product.getNaverProductId(),
                 product.getExternalKey(),
                 product.getUrl(),
+                product.getImageUrl(),
                 categoryPath
         );
     }
@@ -38,6 +40,7 @@ public record ProductSummaryRes(
             String naverProductId,
             String externalKey,
             String url,
+            String imageUrl,
             String categoryPath
     ) {
         return new ProductSummaryRes(
@@ -49,6 +52,7 @@ public record ProductSummaryRes(
                 naverProductId,
                 externalKey,
                 url,
+                imageUrl,
                 categoryPath
         );
     }

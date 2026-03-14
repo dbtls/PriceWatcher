@@ -1,0 +1,265 @@
+# brand / common shorthand
+thisisneverthat, 디스이즈네버댓, 디네댓
+musinsa standard, 무신사스탠다드, 무탠다드
+covernat, 커버낫
+insilence, 인사일런스
+coor, 쿠어
+uniform bridge, 유니폼브릿지, 유브릿지
+lmc, lost management cities, 엘엠씨
+critic, 크리틱
+mahagrid, 마하그리드
+widely project, 와이들리프로젝트, 와이들리
+code graphy, 코드그라피
+aeae, 에이이에이이
+ader error, 아더에러, 아더
+satur, 세터
+lafudgestore, 라퍼지스토어, 라퍼지
+draw fit, 드로우핏
+partimento, 파르티멘토
+frizmworks, 프리즘웍스
+viva studio, 비바스튜디오, 비바
+kirsh, 키르시
+mardi mercredi, 마르디메크르디, 마르디
+depound, 드파운드
+emis, 이미스
+marithe francois girbaud, 마리떼프랑소와저버, 마리떼
+rest and recreation, rest recreation, 레스트앤레크리에이션, rr
+matin kim, 마뗑킴
+the museum visitor, 더뮤지엄비지터
+threetimes, 쓰리타임즈
+grove, 그로브
+recto, 렉토
+post archive faction, paf, 포스트아카이브팩션
+andersson bell, 앤더슨벨
+wooalong, 우알롱
+1993studio, 1993 스튜디오, 일구구삼스튜디오
+espionage, 에스피오나지
+have a good time, 해브어굿타임
+fallett, 팔렛
+istkunst, 이스트쿤스트
+vivastudio, 비바스튜디오, 비바
+nomanual, 노매뉴얼
+essay, 에세이
+orleans store, 올랑스스토어, 올랑스
+glowny, 글로니
+ronron, 론론
+sinoon, 시눈
+depound, 드파운드
+document, 도큐먼트
+ordinary fits, 오디너리핏츠
+eastlogue, 이스트로그
+wild donkey, 와일드동키
+
+# sports / global brands commonly searched on musinsa-style catalogs
+nike, 나이키
+adidas, 아디다스
+new balance, 뉴발란스, 뉴발
+converse, 컨버스
+asics, 아식스
+salomon, 살로몬
+reebok, 리복
+puma, 푸마
+vans, 반스
+dr martens, doc martens, 닥터마틴, 닥마
+birkenstock, 버켄스탁
+ugg, 어그
+keen, 킨
+crocs, 크록스
+carhartt, carhartt wip, 칼하트, 칼하트윕
+stussy, 스투시
+supreme, 슈프림
+obey, 오베이
+human made, 휴먼메이드
+
+# colors
+black, blk, 블랙, 검정, 검은색
+white, wht, 화이트, 흰색, 하양
+blue, blu, 블루, 파랑, 파란색
+navy, nv, 네이비, 남색
+gray, grey, gr, 그레이, 회색
+charcoal, 차콜
+beige, 베이지
+brown, brn, 브라운, 갈색
+khaki, 카키
+green, grn, 그린, 녹색
+olive, 올리브
+red, rd, 레드, 빨강, 붉은색
+burgundy, 버건디, 와인
+yellow, ylw, 옐로우, 노랑, 노란색
+orange, org, 오렌지
+pink, pnk, 핑크
+purple, ppl, 퍼플, 보라
+ivory, 아이보리
+cream, 크림
+silver, 실버
+gold, 골드
+
+# denim / pants
+jean, jeans, denim pants, 진, 청바지, 데님팬츠
+denim, 데님
+pant, pants, trouser, trousers, slacks, 팬츠, 바지, 트라우저, 슬랙스
+chino, chinos, 치노, 치노팬츠
+cargo, cargo pants, 카고, 카고팬츠
+camo, camouflage, 카모, 카모플라주, 밀리터리패턴
+jogger, joggers, 조거, 조거팬츠
+sweatpants, sweat pants, track pants, 트레이닝팬츠, 스웨트팬츠, 츄리닝바지
+wide pants, wide leg pants, 와이드팬츠
+straight pants, 스트레이트팬츠
+relaxed pants, 릴렉스드팬츠
+balloon pants, 벌룬팬츠
+tapered pants, 테이퍼드팬츠
+work pants, workwear pants, 워크팬츠
+painter pants, 페인터팬츠
+carpenter pants, 카펜터팬츠
+parachute pants, parachute, 파라슈트팬츠
+
+# shorts
+short, shorts, short pants, 숏, 쇼츠, 반바지, 숏팬츠
+denim shorts, 데님쇼츠
+cargo shorts, 카고쇼츠
+nylon shorts, 나일론쇼츠
+sweat shorts, 스웨트쇼츠, 트레이닝반바지
+board shorts, 보드쇼츠
+
+# outerwear
+outer, outerwear, 아우터, 겉옷
+jacket, jackets, jk, 자켓, 재킷
+blazer, blazers, 블레이저
+coat, coats, 코트
+half coat, 하프코트
+long coat, 롱코트
+trench coat, trench, 트렌치코트, 트렌치
+mac coat, 맥코트
+chester coat, 체스터코트
+duffle coat, 더플코트
+puffer, puffer jacket, padding, padded jacket, 패딩, 푸퍼, 패딩자켓
+down, down jacket, 다운, 다운자켓
+parka, parka jacket, 파카
+field jacket, 필드자켓
+hunting jacket, 헌팅자켓
+bomber, bomber jacket, ma-1, 항공점퍼, 봄버자켓
+flight jacket, 플라이트자켓
+windbreaker, wind break, 바람막이, 윈드브레이커
+anorak, 아노락
+shell jacket, 쉘자켓
+track jacket, 트랙자켓
+coach jacket, 코치자켓
+varsity jacket, stadium jacket, 스타디움자켓, 바시티자켓
+leather jacket, 레더자켓, 가죽자켓
+rider jacket, riders jacket, 라이더자켓
+sueded jacket, suede jacket, 스웨이드자켓
+fleece jacket, 플리스자켓, 후리스
+cardigan, cardigans, 가디건
+vest, vests, 베스트, 조끼
+down vest, 패딩베스트
+knit vest, 니트베스트
+
+# hoodie / sweat
+hoodie, hoodies, hood zip up, zip hoodie, zip-up hoodie, 후드, 후드티, 후드집업
+sweatshirt, sweatshirts, crewneck, crew neck, 맨투맨, 스웨트셔츠, 크루넥
+pullover, 풀오버
+
+# shirts / tops
+shirt, shirts, 셔츠
+oxford shirt, 옥스포드셔츠
+check shirt, plaid shirt, 체크셔츠
+flannel shirt, 플란넬셔츠
+denim shirt, 데님셔츠
+tee, tees, t-shirt, t-shirts, 티셔츠, 반팔티, 티
+long sleeve tee, long sleeve t-shirt, 긴팔티, 롱슬리브
+henley, henley tee, 헨리넥
+polo, polo shirt, 폴로셔츠
+rugby shirt, 럭비셔츠
+sleeveless, tank top, 나시, 민소매
+turtleneck, mock neck, 목폴라, 터틀넥, 모크넥
+tank top, 탱크탑
+
+# knit
+knit, knitwear, 니트, 니트웨어
+sweater, sweaters, 스웨터
+cardigan, 가디건
+
+# fit / silhouette
+regular, regular fit, 레귤러, 레귤러핏, 기본핏
+relaxed, relaxed fit, 릴렉스드, 릴렉스드핏
+wide, wide fit, 와이드, 와이드핏
+slim, slim fit, 슬림, 슬림핏
+skinny, skinny fit, 스키니, 스키니핏
+straight, straight fit, 스트레이트, 스트레이트핏
+loose, loose fit, 루즈, 루즈핏
+over fit, oversized, over sized, 오버핏, 오버사이즈
+tapered, tapered fit, 테이퍼드, 테이퍼드핏
+crop, cropped, 크롭, 크롭핏
+boxy, 박시, 박시핏
+
+# length
+short length, short, 숏, 짧은기장
+long length, long, 롱, 긴기장
+full length, 풀렝스
+ankle length, 앵클렝스, 복숭아뼈기장
+
+# materials
+cotton, 코튼, 면
+denim, 데님
+nylon, 나일론
+poly, polyester, 폴리, 폴리에스터
+wool, 울
+cashmere, 캐시미어
+leather, 레더, 가죽
+suede, 스웨이드
+corduroy, cord, 코듀로이, 골덴
+fleece, 플리스, 후리스
+terry, french terry, 테리, 프렌치테리
+twill, 트윌
+ripstop, 립스탑
+mesh, 메시
+
+# patterns / details
+stripe, striped, 스트라이프, 줄무늬
+check, checked, plaid, 체크
+pinstripe, 핀스트라이프
+herringbone, 헤링본
+solid, 솔리드, 무지
+graphic, graphics, 그래픽
+logo, 로고
+embroidered, embroidery, 자수
+washed, washing, 워시드, 워싱
+vintage wash, 빈티지워시
+distressed, 디스트로이드
+damaged, 데미지
+patchwork, 패치워크
+quilted, quilting, 퀼팅
+
+# closure / collar / detail
+zip up, zipper, zip, 집업, 지퍼
+button up, button, 버튼, 단추
+snap button, 스냅버튼
+drawstring, 드로스트링
+hooded, hood, 후드형
+stand collar, 스탠드칼라
+collarless, 노카라
+
+# footwear
+sneaker, sneakers, snkrs, 스니커즈, 운동화
+runner, running shoes, 러닝화
+loafer, loafers, 로퍼
+derby, derbies, 더비
+boots, boot, 부츠
+chelsea boots, 첼시부츠
+combat boots, 컴뱃부츠
+sandals, sandal, 샌들
+slipper, slippers, 슬리퍼
+mule, mules, 뮬
+
+# bags / accessories
+bag, bags, 가방
+backpack, 백팩
+messenger bag, 메신저백
+tote bag, 토트백
+cross bag, 크로스백
+cap, caps, 캡, 모자
+beanie, 비니
+hat, hats, 햇
+belt, 벨트
+scarf, 머플러, 스카프
+gloves, glove, 장갑

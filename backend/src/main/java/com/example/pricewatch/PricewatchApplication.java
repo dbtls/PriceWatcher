@@ -4,11 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.retry.annotation.EnableRetry;
 
 /**
  * 애플리케이션 메인 부트스트랩 클래스.
  */
 @EnableAsync
+@EnableRetry
 @EnableScheduling
 @SpringBootApplication
 public class PricewatchApplication {

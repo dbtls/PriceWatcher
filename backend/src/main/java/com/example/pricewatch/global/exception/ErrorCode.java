@@ -21,6 +21,8 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "USER-002", "이미 사용중인 이메일입니다."),
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT-001", "상품을 찾을 수 없습니다."),
     WATCHLIST_CONFLICT(HttpStatus.CONFLICT, "WATCHLIST-001", "이미 워치리스트에 등록된 상품입니다."),
+    WATCHLIST_GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "WATCHLIST-002", "워치리스트 그룹을 찾을 수 없습니다."),
+    WATCHLIST_GROUP_ITEM_CONFLICT(HttpStatus.CONFLICT, "WATCHLIST-003", "이미 그룹에 등록된 상품입니다."),
     NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "NOTI-001", "알림을 찾을 수 없습니다."),
     LOCK_ACQUISITION_FAILED(HttpStatus.TOO_MANY_REQUESTS, "LOCK-001", "락 획득에 실패했습니다."),
     EXTERNAL_API_QUOTA_EXCEEDED(HttpStatus.TOO_MANY_REQUESTS, "NAVER-001", "외부 API 일일 쿼터를 초과했습니다.");

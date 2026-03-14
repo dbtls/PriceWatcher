@@ -1,0 +1,74 @@
+@baseUrl = http://localhost:8080
+@email = test@test.com
+@password = test1234
+@nickname = tester
+
+### 1. Register
+# 이미 가입된 계정이면 409가 나와도 다음 요청 진행에는 문제 없습니다.
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "nickname": "{{nickname}}"
+}
+
+### 2. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.data.accessToken);
+%}
+
+
+### 3. Search products from internal search
+GET {{baseUrl}}/products/search?q=유니폼브릿지&page=0&size=300
+Authorization: Bearer {{accessToken}}
+
+### 4. Search products from external API only
+GET {{baseUrl}}/products/search/external?q=프리즘웍스 오스카
+Authorization: Bearer {{accessToken}}
+
+### 5. Select and save one external product
+# /products/search/external 응답의 externalResults[].offers[] 항목 하나를 아래 body에 붙여 넣어 사용합니다.
+# @name select
+POST {{baseUrl}}/products/select
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "productId": null,
+  "brand": "프리즘웍스",
+  "title": "[프리즘웍스] NYCO HOODED OSCAR JACKET _ BLACK FZW2022SSOT029",
+  "price": 62100,
+  "mallName": "무신사",
+  "naverProductId": "31260424717",
+  "externalKey": "cb53afd21abe102429334b5dd231777848fe1eccb8154c011ba860ffae7b02fa",
+  "url": "https://link.musinsa.com/app/goods/2400009?utm_source=naver_jisicshopping&utm_medium=sh&source=NVSH&utm_term={keyword}&utm_content={ad_group}",
+  "imageUrl": "https://shopping-phinf.pstatic.net/main_3126042/31260424717.jpg",
+  "categoryPath": "패션의류>남성의류>점퍼"
+}
+
+> {%
+  client.global.set("selectedProductId", response.body.data.product.productId);
+%}
+
+### 6. Read saved product detail
+GET {{baseUrl}}/products/{{selectedProductId}}
+Authorization: Bearer {{accessToken}}
+
+### 7. Add saved product to watchlist
+POST {{baseUrl}}/watchlist/{{selectedProductId}}
+Authorization: Bearer {{accessToken}}
+
+### 8. My watchlist
+GET {{baseUrl}}/watchlist
+Authorization: Bearer {{accessToken}}

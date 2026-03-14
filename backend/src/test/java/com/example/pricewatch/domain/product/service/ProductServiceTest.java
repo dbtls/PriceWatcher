@@ -1,6 +1,7 @@
 package com.example.pricewatch.domain.product.service;
 
 import com.example.pricewatch.TestBeansConfig;
+import com.example.pricewatch.domain.price.repository.PriceHistoryRepository;
 import com.example.pricewatch.domain.product.dto.ProductSelectReq;
 import com.example.pricewatch.domain.product.dto.ProductSelectRes;
 import com.example.pricewatch.domain.product.entity.Product;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,6 +31,9 @@ class ProductServiceTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private PriceHistoryRepository priceHistoryRepository;
+
     @Test
     void selectCreatesNewProductByExternalIdentifiers() {
         ProductSelectReq req = new ProductSelectReq(
@@ -40,6 +45,7 @@ class ProductServiceTest {
                 "123456789",
                 "external-key-1",
                 "https://store.musinsa.com/app/goods/123456789",
+                "https://image.msscdn.net/images/goods_img/20260314/123456789/123456789_1_500.jpg",
                 "패션의류>남성의류>후드집업"
         );
 
@@ -52,9 +58,15 @@ class ProductServiceTest {
         assertThat(saved.getBrand()).isEqualTo("MUSINSA STANDARD");
         assertThat(saved.getNaverProductId()).isEqualTo("123456789");
         assertThat(saved.getExternalKey()).isEqualTo("external-key-1");
+        assertThat(saved.getImageUrl()).isEqualTo("https://image.msscdn.net/images/goods_img/20260314/123456789/123456789_1_500.jpg");
         assertThat(saved.getRefreshStatus()).isEqualTo(RefreshStatus.READY);
         assertThat(saved.getCategory()).isNotNull();
         assertThat(saved.getCategory().getPath()).isEqualTo("패션의류>남성의류>후드집업");
+        assertThat(priceHistoryRepository.findByProductIdAndCapturedAt(saved.getId(), LocalDate.now()))
+                .isPresent()
+                .get()
+                .extracting("price")
+                .isEqualTo(new BigDecimal("79900"));
     }
 
     @Test
@@ -83,6 +95,7 @@ class ProductServiceTest {
                 "999",
                 "external-key-new",
                 "https://store.musinsa.com/app/goods/999",
+                "https://image.msscdn.net/images/goods_img/20260314/999/999_1_500.jpg",
                 "패션의류>남성의류"
         );
 
@@ -97,7 +110,13 @@ class ProductServiceTest {
         assertThat(updated.getPrice()).isEqualByComparingTo("55500");
         assertThat(updated.getMallName()).isEqualTo("무신사");
         assertThat(updated.getExternalKey()).isEqualTo("external-key-new");
+        assertThat(updated.getImageUrl()).isEqualTo("https://image.msscdn.net/images/goods_img/20260314/999/999_1_500.jpg");
         assertThat(updated.getRefreshStatus()).isEqualTo(RefreshStatus.READY);
         assertThat(updated.isNeedsRematch()).isFalse();
+        assertThat(priceHistoryRepository.findByProductIdAndCapturedAt(updated.getId(), LocalDate.now()))
+                .isPresent()
+                .get()
+                .extracting("price")
+                .isEqualTo(new BigDecimal("55500"));
     }
 }

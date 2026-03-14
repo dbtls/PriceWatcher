@@ -9,5 +9,6 @@ import java.util.List;
  * 알림 저장소.
  */
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    long countByUserIdAndIsReadFalse(Long userId);
     List<Notification> findByUserIdOrderByCreatedAtDesc(Long userId);
 }

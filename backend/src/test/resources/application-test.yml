@@ -17,6 +17,12 @@ spring:
     redis:
       host: localhost
       port: 6379
+    elasticsearch:
+      repositories:
+        enabled: false
+
+  elasticsearch:
+    uris: http://localhost:9200
 
   batch:
     jdbc:
@@ -27,3 +33,8 @@ spring:
 jwt:
   secret: pricewatch-secret-key-pricewatch-secret-key
   access-token-validity: 900000
+
+app:
+  search:
+    elasticsearch:
+      enabled: false
