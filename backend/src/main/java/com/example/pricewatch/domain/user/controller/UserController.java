@@ -1,6 +1,7 @@
 package com.example.pricewatch.domain.user.controller;
 
 import com.example.pricewatch.domain.user.dto.ProfileRes;
+import com.example.pricewatch.domain.user.dto.MyPageSummaryRes;
 import com.example.pricewatch.domain.user.service.UserService;
 import com.example.pricewatch.global.dto.ResponseDto;
 import com.example.pricewatch.global.security.UserPrincipal;
@@ -27,5 +28,10 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<ResponseDto<ProfileRes>> myProfile(@AuthenticationPrincipal UserPrincipal principal) {
         return ResponseEntity.ok(ResponseDto.success("프로필 조회 성공", userService.getMyProfile(principal.getUserId())));
+    }
+
+    @GetMapping("/me/summary")
+    public ResponseEntity<ResponseDto<MyPageSummaryRes>> myPageSummary(@AuthenticationPrincipal UserPrincipal principal) {
+        return ResponseEntity.ok(ResponseDto.success("마이페이지 요약 조회 성공", userService.getMyPageSummary(principal.getUserId())));
     }
 }

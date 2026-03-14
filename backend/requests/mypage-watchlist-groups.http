@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:8080
+@email = tester@example.com
+@password = password123!
+
+### 1. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.data.accessToken);
+%}
+
+### 2. My page summary
+GET {{baseUrl}}/users/me/summary
+Authorization: Bearer {{accessToken}}
+
+### 3. Create watchlist group
+POST {{baseUrl}}/watchlist/groups
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "검정 후드집업 비교"
+}
+
+### 4. List watchlist groups
+GET {{baseUrl}}/watchlist/groups
+Authorization: Bearer {{accessToken}}
+
+### 5. Add watchlist product to group
+POST {{baseUrl}}/watchlist/groups/1/items
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "productId": 1
+}
+
+### 6. Group detail
+GET {{baseUrl}}/watchlist/groups/1?days=30
+Authorization: Bearer {{accessToken}}

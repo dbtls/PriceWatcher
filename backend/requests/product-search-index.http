@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:8080
+@email = yushin@example.com
+@password = Password123!
+@dbQuery = 디스이즈네버댓 Regular Jeans Blue
+
+### 1. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.data.accessToken);
+%}
+
+### 2. Rebuild product search index
+POST {{baseUrl}}/products/search-index/rebuild
+Authorization: Bearer {{accessToken}}
+
+### 3. Search products after index rebuild
+GET {{baseUrl}}/products/search?q={{dbQuery}}&page=0&size=20
+Authorization: Bearer {{accessToken}}

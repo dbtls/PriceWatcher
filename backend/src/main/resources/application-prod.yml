@@ -25,3 +25,12 @@ spring:
 logging:
   level:
     root: info
+
+app:
+  email:
+    dispatch-enabled: ${EMAIL_DISPATCH_ENABLED:false}
+    dispatch-delay-ms: ${EMAIL_DISPATCH_DELAY_MS:10000}
+    max-attempt: ${EMAIL_MAX_ATTEMPT:3}
+  search:
+    elasticsearch:
+      enabled: ${PRODUCT_SEARCH_ES_ENABLED:true}

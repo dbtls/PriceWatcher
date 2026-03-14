@@ -2,12 +2,15 @@ package com.example.pricewatch.domain.product.service;
 
 import com.example.pricewatch.domain.category.entity.Category;
 import com.example.pricewatch.domain.category.service.CategoryService;
+import com.example.pricewatch.domain.price.entity.PriceHistory;
+import com.example.pricewatch.domain.price.repository.PriceHistoryRepository;
 import com.example.pricewatch.domain.product.dto.ProductSelectReq;
 import com.example.pricewatch.domain.product.dto.ProductSelectRes;
 import com.example.pricewatch.domain.product.dto.ProductSummaryRes;
 import com.example.pricewatch.domain.product.entity.Product;
 import com.example.pricewatch.domain.product.entity.RefreshStatus;
 import com.example.pricewatch.domain.product.repository.ProductRepository;
+import com.example.pricewatch.domain.task.service.ProductSearchSyncService;
 import com.example.pricewatch.global.exception.ApiException;
 import com.example.pricewatch.global.exception.ErrorCode;
 import com.example.pricewatch.global.util.HashUtil;
@@ -16,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +31,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final PriceHistoryRepository priceHistoryRepository;
+    private final ProductSearchSyncService productSearchSyncService;
 
     @Transactional(readOnly = true)
     public ProductSummaryRes getProduct(Long productId) {
@@ -50,6 +56,7 @@ public class ProductService {
             throw new ApiException(ErrorCode.INVALID_INPUT_VALUE);
         }
         String normalizedUrl = LinkNormalizer.normalize(url);
+        String imageUrl = normalizeNullable(req.imageUrl());
         String naverProductId = normalizeNullable(req.naverProductId());
         String externalKey = normalizeNullable(req.externalKey());
         if (externalKey == null) {
@@ -74,8 +81,11 @@ public class ProductService {
                     naverProductId,
                     externalKey == null ? product.getExternalKey() : externalKey,
                     normalizedUrl,
+                    imageUrl,
                     now
             );
+            upsertTodayPriceHistory(product, req.price(), now);
+            productSearchSyncService.publishUpsert(product.getId());
             return ProductSelectRes.of(ProductSummaryRes.from(product), false);
         }
 
@@ -88,13 +98,33 @@ public class ProductService {
                 .naverProductId(naverProductId)
                 .externalKey(externalKey)
                 .url(normalizedUrl)
+                .imageUrl(imageUrl)
                 .lastSeenAt(now)
                 .refreshStatus(RefreshStatus.READY)
                 .needsRematch(false)
                 .failCount(0)
                 .build();
         productRepository.save(product);
+        upsertTodayPriceHistory(product, req.price(), now);
+        productSearchSyncService.publishUpsert(product.getId());
         return ProductSelectRes.of(ProductSummaryRes.from(product), true);
+    }
+
+    private void upsertTodayPriceHistory(Product product, java.math.BigDecimal price, LocalDateTime now) {
+        LocalDate today = now.toLocalDate();
+        PriceHistory history = priceHistoryRepository.findByProductIdAndCapturedAt(product.getId(), today)
+                .orElseGet(() -> PriceHistory.builder()
+                        .product(product)
+                        .price(price)
+                        .capturedAt(today)
+                        .createdAt(now)
+                        .build());
+
+        if (history.getId() == null) {
+            priceHistoryRepository.save(history);
+            return;
+        }
+        history.updatePrice(price);
     }
 
     private Optional<Product> findExistingProduct(String naverProductId, String externalKey) {

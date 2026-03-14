@@ -29,3 +29,14 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+app:
+  debug:
+    archive-api-responses: true
+  email:
+    dispatch-enabled: true
+    dispatch-delay-ms: 10000
+    max-attempt: 3
+  search:
+    elasticsearch:
+      enabled: true

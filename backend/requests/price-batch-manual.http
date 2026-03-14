@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:8080
+@email = tester@example.com
+@password = password123!
+@productId = 3
+
+### 1. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.data.accessToken);
+%}
+
+### 2. Trigger price batch now
+POST {{baseUrl}}/batch/price/run
+Authorization: Bearer {{accessToken}}
+
+### 3. Check email outbox stats
+GET {{baseUrl}}/email/outbox/stats
+Authorization: Bearer {{accessToken}}
+
+### 4. Dispatch email outbox now
+POST {{baseUrl}}/email/outbox/dispatch
+Authorization: Bearer {{accessToken}}
+
+### 5. Check product detail after batch
+GET {{baseUrl}}/products/{{productId}}
+Authorization: Bearer {{accessToken}}
+
+### 6. Check price history
+GET {{baseUrl}}/products/{{productId}}/price-history?days=30
+Authorization: Bearer {{accessToken}}
+
+### 7. Check notifications
+GET {{baseUrl}}/notifications
+Authorization: Bearer {{accessToken}}
+
+### 8. Check my watchlist
+GET {{baseUrl}}/watchlist
+Authorization: Bearer {{accessToken}}

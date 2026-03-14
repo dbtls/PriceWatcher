@@ -41,7 +41,7 @@ public class NotificationService {
     }
 
     @Transactional
-    public void create(User user, NotificationType type, String message, Long productId) {
+    public Notification create(User user, NotificationType type, String message, Long productId) {
         Notification notification = Notification.builder()
                 .user(user)
                 .type(type)
@@ -56,5 +56,6 @@ public class NotificationService {
                 "[PriceWatcher] " + type.name(),
                 message
         );
+        return notification;
     }
 }
