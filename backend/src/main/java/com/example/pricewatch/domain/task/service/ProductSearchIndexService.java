@@ -57,6 +57,7 @@ public class ProductSearchIndexService {
     @Value("${app.search.elasticsearch.min-score:2.5}")
     private float minScore;
 
+
     @Transactional(readOnly = true)
     public List<ProductSummaryRes> search(String q, int page, int size) {
         if (!elasticsearchEnabled) {
