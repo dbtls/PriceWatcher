@@ -15,6 +15,7 @@ build/
 .sts4-cache
 .env
 .env.dev
+.env.prod
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
